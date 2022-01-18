@@ -1,2 +1,4 @@
-# OnlyFans
-DJANGO OnlyFans clone
+# DJANGO OnlyFans clone
+
+**
+  pip install -r requirements.txt
