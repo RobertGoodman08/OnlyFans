@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-4">
+
+
+            {% include 'navbar.html' %}
+
+        </div>
+        <div class="col-sm-8">
+
+            <span class="badge rounded-pill bg-primary" style="font-size: 1rem; margin-top: 15px;">результаты поиска: <b style="color: black">{{ user_list.title }}</b></span>
+           {% for person in user_list.people.all %}
+               <div class="card" style="width: 18rem; margin-top: 5ch" >
+                  {% if person.profile.banner %}
+                    <img src="{{ person.profile.banner }}" class="card-img-top" alt="...">
+                  {% else %}
+                    <img src="{% static 'img/default_header_image.png' %}" class="card-img-top" alt="...">
+                  {% endif %}
+                  <div class="card-body">
+                    <h5 class="card-title">{% if person.profile.picture %}<img src="{{ person.profile.picture.url }}" alt="" width="32" height="32" class="rounded-circle me-2">{% else %}<img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">{% endif %}@<b>{{ person.username }}</b></h5>
+                    <p class="card-text">{{ person.first_name }} {{ person.last_name }}</p>
+                    <a href="#" class="btn btn-primary">{{ person.profile.profile_info }}</a>
+                  </div>
+                </div>
+           {% endfor %}
+
+
+
+        </div>
+      </div>
+
+    </div>
+
+
+
+
+
+
+{% endblock %}

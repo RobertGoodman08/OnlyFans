@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Уведомления {% endblock %}
+
+
+{% block content %}
+
+
+    <div class="container">
+      <div class="row">
+        <div class="col-3">
+
+
+            {% include 'navbar.html' %}
+
+        </div>
+        <div class="col-8">
+
+          {% for notification in notifications %}
+            <div class="card mb-3" style="max-width: 540px; margin-top: 25px">
+              <div class="row g-0">
+                <div class="col-md-4">
+                    <a href="{% url 'profile' notification.user.profile%}" style="text-decoration: none; color: black"><h5 class="card-title">{% if notification.sender.profile.picture %}<img src="{{ notification.sender.profile.picture.url }}" alt="" width="170" height="170" class="rounded-circle me-2" >{% else %}<img src="{% static 'img/default_header_image.png' %}" class="img-fluid" alt="..." style="height: 200px">{% endif %}</h5></a>
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                      <h5 class="card-title"><a href="{% url 'profile' notification.user.profile%}" style="text-decoration: none; color: black">@{{ notification.sender.username }}</a></h5>
+                    {% if notification.notification_type == 1 %}
+                        <p class="card-text">T<b>Liked your post</b><a href="{% url 'postdetails' notification.post.id %}">See post</a></p>
+                    {% elif notification.notification_type == 2 %}
+                        <p><b>@{{ notification.sender.username }}</b></p>
+                        <p>Комментарий: </p>
+                        <p style="font-style: italic;"><b>"{{ notification.text_preview }}"</b></p>
+                        <a href="{% url 'postdetails' notification.post.id %}">См. поз.</a>
+                    {% else %}
+                        <p><b>@{{ notification.sender.username }}</b></p>
+                        <p style="font-style: italic;"><b>Подписался/Подписалась на вас!</b></p>
+                    {% endif %}
+                    <p class="card-text"><small class="text-muted"><a href="{% url 'delete-notification' notification.id %}" class="secondary-content"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16" style="float: right">
+                                          <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                          <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                        </svg></small>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+
+
+
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+{% endblock %}

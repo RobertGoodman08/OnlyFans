@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="container">
+      <div class="row">
+        <div class="col-sm-4">
+
+
+            {% include 'navbar.html' %}
+
+        </div>
+        <div class="col-sm-8">
+
+            <h5 style="margin-top: 25px">Люди подписались на меня:</h5>
+           {% for person in my_fans %}
+               <div class="card" style="width: 18rem; margin-top: 5ch" >
+                  {% if person.subscriber.profile.banner %}
+                    <img src="{{ person.subscriber.profile.banner.url }}" class="card-img-top" alt="...">
+                  {% else %}
+                    <img src="{% static 'img/default_header_image.png' %}" class="card-img-top" alt="...">
+                  {% endif %}
+                  <div class="card-body">
+                    <h5 class="card-title">{% if person.subscriber.profile.picture %}<img src="{{ person.subscriber.profile.picture.url }}" alt="" width="32" height="32" class="rounded-circle me-2">{% else %}<img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">{% endif %}@<b>{{ person.subscriber.username }}</b></h5>
+                    <p class="card-text"> {{ person.subscriber.first_name }} {{ person.subscriber.last_name }}</p>
+                   <p class="card-text">{{ person.subscriber.profile.profile_info }}</p>
+                  </div>
+                </div>
+           {% endfor %}
+
+
+
+        </div>
+      </div>
+
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<head>
+
+<link rel="stylesheet" href="{% static 'inbox/styles.css' %}">
+  <title>Gmail Inbox Mockup Example</title>
+</head>
+
+<body>
+
+
+
+  <!-- Main Header start -->
+
+
+
+  <!-- end account container -->
+  <div id="message-body" class="body-content-container">
+
+
+
+    <div class="body-content-wrapper">
+      <div class="inbox-label-container">
+        <p class="inbox-label"><a href="/"  class="btn btn-primary">Назад</a></p>
+        <i class="fas fa-check"></i>
+      </div>
+
+      <div id="msg-container1" class="message-container">
+        <div id="message1" class="message">
+          <div id="preview-avatar" class="avatar-wrapper" >
+            <div class="name-circle-container show-flex" >
+              <h3 class="sender-name" >Входящие</h3>
+            </div>
+          </div>
+
+          <div id="preview-message" class="preview-container">
+              <h4 class="preview-header">Активные разговоры</h4>
+          </div>
+
+          <div class="icon-hover-wrapper" id="message-icon-container">
+
+            <div class="icon-hover-container" id="inbox-icons">
+              <i class="fas fa-thumbtack"></i>
+              <i class="far fa-clock"></i>
+              <i class="fas fa-check"></i>
+              <i class="fas fa-ellipsis-v"></i>
+
+            </div>
+          </div>
+        </div>
+      </div>
+        <br>
+
+
+      {% for message in messages %}
+        <div id="msg-container2" class="message-container">
+        <div id="message2" class="message">
+          <div id="preview-avatar2" class="avatar-wrapper">
+            <div class="name-circle-container show-flex">
+              <div class="circle-avatar yellow">
+
+                {% if message.user.profile.picture %}
+                   <img src="{{ message.user.profile.picture.url }}" alt="" width="32" height="32" class="rounded-circle me-2">
+                {% else %}
+                   <img src="{% static 'img/default_header_image.png' %}" class="img-fluid" alt="..." style="height: 200px">
+                {% endif %}
+
+
+              </div>
+                <a href="{% url 'directs' message.user.username %}" style="text-decoration: black"><h4 class="sender-name">{{ message.user.first_name }} {{ message.user.last_name }}</h4></a>
+            </div>
+          </div>
+
+          <div id="preview-message" class="preview-container">
+            <p class="preview-header">@{{ message.user.username }}<span id="preview-message-text2" class="preview-text">=количества сообщении: {{ message.unread }}</span>
+          </div>
+
+          <div class="icon-hover-wrapper" id="message-icon-container">
+
+            <div class="icon-hover-container" id="inbox-icons">
+              <i class="fas fa-thumbtack"></i>
+              <i class="far fa-clock"></i>
+              <i class="fas fa-check"></i>
+              <i class="fas fa-ellipsis-v"></i>
+
+            </div>
+          </div>
+        </div>
+
+        <div id="expanded-msg2" class="expanded-message-wrapper hide">
+          <div class="expanded-message">
+            <div class="name-circle-container show-flex exp">
+              <div class="circle-avatar yellow">S</div>
+              <span class="sender-name strong">Stefanie</span> <span class="sender-name">&nbsp;to me</span>
+            </div>
+
+            <div class="expanded-message-content">
+              <p class="msg-content">Yes, just send me the money for the tickets on Venmo, and we can figure out the
+                rest later. Anyways, can't wait to see you there! Also, thanks again for feeding the babies while we
+                were gone! </p>
+            </div>
+
+          </div>
+
+          <div class="reply-container">
+            <div class="name-circle-container show-flex exp">
+              <div class="circle-avatar burgandy">K</div>
+              <span class="sender-name strong red">Draft</span> <span class="sender-name strong grey">&nbsp;to Stefanie <i
+                  class="fas fa-chevron-down"></i> </span>
+            </div>
+
+            <div class="reply-input-container">
+              <textarea class="reply-input" type="text"></textarea>
+
+            </div>
+
+          </div>
+          <div class="send-container">
+            <div class="button-container">
+              <div class="button">Send</div>
+              <i class="fas fa-paperclip"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+       {% empty %}
+
+          <div class="center-align">
+                <br><br><br><br><br>
+                <i class="material-icons large">inbox</i>
+                <h3>No messages</h3>
+                <h5>Your inbox is empty</h5>
+                <br>
+                <br><br><br><br><br>
+          </div>
+
+      {% endfor %}
+
+
+
+
+
+
+  </div>
+  <script type="text/javascript" src="{% static 'inbox/index.js'  %}"></script>
+</body>
+
+{% endblock %}

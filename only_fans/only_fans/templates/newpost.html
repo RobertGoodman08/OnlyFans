@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Создать пост {% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3">
+        {% include 'navbar.html' %}
+    </div>
+    <div class="col-sm-8" style="margin-top: 25px">
+         <form  method="post" action="" enctype="multipart/form-data" role="form"> <!-- enctype="multipart/form-data" Данные не кодируются. Это значение применяется при отправке файлов -->
+              {% csrf_token %}
+              <h5 class="card-title">Новый пост</h5>
+             <br>
+              <div class="mb-3">
+                {{ form.title }}
+              </div>
+              <div class="mb-3">
+                 <div class="btn btn-success">MEDIA FILES</div>
+                {{ form.content }}
+              </div>
+              <div class="mb-3">
+                  {{ form.caption }}
+              </div>
+              <div class="mb-3">
+                {{ form.tier }}
+              </div>
+
+
+             <button type="submit" class="btn btn-primary">Post</button>
+        </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

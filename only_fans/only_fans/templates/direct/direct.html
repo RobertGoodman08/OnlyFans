@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %} Ваши сообщения {% endblock %}
+
+
+
+{% block content %}
+
+
+
+
+    <div class="container" style="margin-top: 25px">
+      <div class="row">
+        <div class="col-4">
+            <ul class="list-group">
+
+                <li class="list-group-item active" aria-current="true"><a  href="/" class="btn btn-light">Назад</a><span style="padding-left: 25px">Ваши сообщения</span></li>
+                <br>
+            </ul>
+
+            {% for message in messages %}
+                <div class="card mb-3" style="max-width: 540px;">
+                  <a href="{% url 'directs' message.user.username %}" style="text-decoration: black">
+                    <div class="row g-0">
+                    <div class="col-md-4">
+                      {% if message.user.profile.picture %}
+                        <a href="{% url 'profile' message.user.profile %}"><img src="{{ message.user.profile.picture.url }}" class="img-fluid rounded-start" alt="..." style="border-radius: 50px; margin-top: 0px; height: 120px"></a>
+                      {% else %}
+                          <img src="{% static 'img/default_header_image.png' %}" class="img-fluid rounded-start" alt="...">
+                      {% endif %}
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card-body">
+                        <h6 style="color: black">{{ message.user.first_name }} {{ message.user.last_name }}</h6>
+                        <p class="card-text"><small class="text-muted">@{{ message.user.username }}</small></p>
+                        <span class="new badge">{{ message.unread }}</span>
+                      </div>
+                    </div>
+                  </div>
+                  </a>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col-8">
+
+                <div class="mb-3">
+                    {% for direct in directs %}
+                        {% if direct.sender.profile.picture %}
+                            <h5 class="card-title"><img src="{{ direct.sender.profile.picture.url }}" alt="" width="32" height="32" class="rounded-circle me-2" >{{ direct.sender.first_name }} {{ direct.sender.last_name }}</h5>
+                        {% else %}
+                            <h5 class="card-title"><img src="{% static 'img/default_header_image.png' %}" alt="" width="32" height="32" class="rounded-circle me-2">{{ direct.sender.first_name }} {{ direct.sender.last_name }}</h5>
+                        {% endif %}
+
+                         <p style="margin-left: 25px">{{ direct.body }}</p>
+                         <small class="text-muted">{{ direct.date | naturaltime }}</small>
+                        <hr>
+                    {% endfor %}
+                </div>
+                <div class="mb-3">
+                  <form id="senddirectform" method="POST" action="{% url 'send-direct' %}">
+                      {% csrf_token %}
+                         <input type="hidden" name="to_user" value="{{ active_direct }}" class="form-control" placeholder="Type your message">
+                         <input id="text" name="body" type="text" class="form-control" placeholder="Введите ваше сообщение">
+                         <button type="submit" name="action" style="display: none"></button>
+                  </form>
+                </div>
+
+
+        </div>
+      </div>
+</div>
+
+
+{% endblock %}

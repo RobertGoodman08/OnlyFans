@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Profile {% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    {% include 'navbar3.html' %}
+    <div class="col-sm-8" style="margin-top: 25px">
+        <div class="card mb-3">
+            {% if profile.banner %}
+                <img src="{{ profile.banner.url }}" class="img-fluid" alt="..." style="height: 200px">
+            {% else %}
+                <img src="{% static 'img/default_header_image.png' %}" class="img-fluid" alt="..." style="height: 200px">
+            {% endif %}
+              <div class="card-body">
+                <h5 class="card-title"> {% if profile.picture  %}<img src="{{ profile.picture.url }}" alt="" width="60" height="60" class="rounded-circle me-2">
+                                        {% else %}<img src="{% static 'img/default_header_image.png' %}" class="img-fluid" alt="..." style="height: 200px">
+                                        {% endif %}@{{ profile.user }}<button type="button" class="btn btn-outline-primary" style="margin-left: 380px"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
+  <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
+  <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"/>
+</svg>{% if user.is_authenticated and user == profile.user %}<a href="{% url 'edit-profile' %}" style="text-decoration: none; padding-left: 5px">Редактировать профиль </a>{% endif %}</button><button type="button" class="btn btn-outline-primary" style="margin-left: 5px"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share" viewBox="0 0 16 16">
+  <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
+</svg></button></h5>
+                <p class="card-text">{{ profile.profile_info }}</p>
+                <p class="card-text"><small class="text-muted">{{ profile.url }}</small></p>
+                {% if user.is_authenticated and user != profile.user %}
+                  <div class="container">
+                  <div class="row row-cols-3">
+                    {% for tier in tiers %}
+                        <div class="col"><a class="btn btn-outline-primary" style="margin-bottom: 25px" href="{% url 'subscribe' profile.user.username tier.id %}">подписываться</a></div>
+                        <div class="col"><h3>${{ tier.price }}</h3></div>
+                        <div class="col">{{ tier.description }}</div>
+                    {% endfor %}
+                  </div>
+                </div>
+                {% endif %}
+                <br>
+
+                 <ul class="nav nav-tabs">
+                      <li class="nav-item" style="padding-left: 300px">
+                        <a class="nav-link active" aria-current="page" href="#">ПОСТЫ {{ posts_count }}</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#">МЕДИА {{ fans_count }}</a>
+                      </li>
+                 </ul>
+                  <br>
+
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                   {% for post in posts %}
+                     {% if post.content.first.file.name|slice:"-3:" == 'jpg' %}
+                          <div class="col">
+                            <div class="card h-100">
+                                <a href="{{ post.get_absolute_url }}"><img src="{{ post.content.first.file.url }}" alt="..." style="height: 180px"></a>
+                            </div>
+                          </div>
+                     {% else %}
+                        <div class="col">
+                            <div class="card h-100">
+                              <video class="responsive-video" controls="controls" preload="metadata">
+                                  <source src="{{ post.content.first.file.url }}#t=0.5" type="video/mp4">
+                              </video>
+                            </div>
+                          </div>
+                     {% endif %}
+                   {% endfor %}
+                </div>
+
+
+              </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

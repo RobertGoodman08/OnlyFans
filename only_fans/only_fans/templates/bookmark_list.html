@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Закладки {% endblock %}
+
+
+{% block content %}
+
+
+    <div class="container">
+      <div class="row">
+        <div class="col-3">
+
+
+            {% include 'navbar.html' %}
+
+        </div>
+        <div class="col-8">
+            <nav class="navbar navbar-light bg-light" style="width: 100%">
+              <div class="container-fluid">
+                <a class="navbar-brand">Мои любимые посты</a>
+              </div>
+            </nav>
+            {% for post in bookmark_data %}
+
+                <div class="card mb-3" style="margin-top: 5px">
+                  {% if post.content.first.file.name|slice:"-3:" == 'jpg' %}
+                    <a href="{{ post.get_absolute_url }}">
+                        <img src="{{ post.content.first.file.url }}" class="card-img-top" alt="...">
+                    </a>
+                  {% else %}
+                     <div class="video-container">
+                          <video class="responsive-video" controls="controls" preload="metadata">
+                            <source src="{{ post.content.first.file.url }}#t=0.5" type="video/mp4">
+                          </video>
+                     </div>
+                  {% endif %}
+                  <div class="card-body">
+                    <h5 class="card-title"><h5 class="card-title">{% if post.user.profile.picture %}<img src="{{ post.user.profile.picture.url }}" alt="" width="32" height="32" class="rounded-circle me-2">{% else %}<img src="{% static 'img/default_header_image.png' %}" class="img-fluid" alt="..." style="height: 200px">{% endif %}<b>@{{ post.user.username }}</b></h5>
+                    <p class="card-text">{{ post.caption }}</p>
+                    <p class="card-text"><small class="text-muted">Опубликован в: <b>{{ post.posted }}</b></small></p>
+                  </div>
+                </div>
+            {% endfor %}
+
+
+
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+{% endblock %}

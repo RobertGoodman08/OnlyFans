@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}  {% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    {% include 'navbar3.html' %}
+    <div class="col-sm-8" style="margin-top: 25px">
+        {% if visible == False %}
+            <div class="center-align">
+                <i class="material-icons large grey-text">lock</i>
+                <br>
+                <h3>No available</h3>
+                <h4 class="card-title grey-text text-darken-4">This content is for {{ post.tier }}</h4>
+                <h5 class="card-title grey-text text-darken-4">You need to upgrade your subscription</h5>
+                <br><br>
+                <a class="waves-effect waves-light btn-large"><i class="material-icons left">upgrade</i>Upgrade</a>
+            </div>
+        {% else %}
+            <div class="card mb-3">
+              {% for con in post.content.all %}
+                {% if con.file.name|slice:"-3:" == 'jpg' %}
+                  <img src="{{ con.file.url }}" class="card-img-top" alt="...">
+                {% else %}
+                    <div class="video-container">
+                        <video class="responsive-video" controls="controls" preload="metadata">
+                          <source src="{{ con.file.url }}#t=0.5" type="video/mp4">
+                        </video>
+                    </div>
+                {% endif %}
+               {% endfor %}
+              <div class="card-body">
+                <div class="card-action">
+                    {% if liked == True %}
+                      <a class="btn btn-primary" data-position="bottom" data-tooltip="Remove like" href="{% url 'postlike' post.id %}" >{{ post.likes_count }} Likes</a>
+                    {% else %}
+                      <a href="{% url 'postlike' post.id %}" style="text-decoration: none; color: black;">{{ post.likes_count }} лайки</a>
+                    {% endif %}
+
+
+                      <a href="#" style="text-decoration: none; color: black;">{{ post.favorites_count }} Favorites</a>
+
+                      <a href="#" style="text-decoration: none; color: black"> {{ post.comments_count }} Комментарии
+                      </a>
+                      <a href="{% url 'postbookmark' post.id %}" style="text-decoration: none; color: black; float: right" class="btn-floating halfway-fab waves-effect waves-light red"><svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-bookmark" viewBox="0 0 16 16">
+                              <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                            </svg>
+                      </a>
+                </div>
+
+
+                <h5 class="card-title"><a href="{% url 'profile' post.user.profile  %}" style="text-decoration: none; color: black">@{{ post.user.username }}</a></h5>
+                <p class="card-text">{{ post.caption }}</p>
+                <p class="card-text"><small class="text-muted">{{ post.posted }}</small></p>
+
+              </div>
+        </div>
+        {% endif %}
+            <h3>Комментарии</h3>
+                <div class="card">
+                 {% for comment in comments %}
+                      <div class="card-header">
+                         <h5 class="card-title">{% if comment.user.profile.picture %}<img src="{{ comment.user.profile.picture.url }}" alt="" width="32" height="32" class="rounded-circle me-2">{% else %}<img src="{% static 'img/default_header_image.png' %}" class="img-fluid" alt="..." style="height: 200px"> {% endif %}{{ comment.user.first_name }} {{ comment.user.last_name }}</h5>
+                      </div>
+                      <div class="card-body">
+                            <p class="card-text">{{ comment.body }}</p>
+                      </div>
+                        <div class="card-footer">
+                          <small class="text-muted">{{ comment.date }}</small>
+                      </div>
+                 {% endfor %}
+              </div>
+
+
+                  <br>
+                  <div class="mb-3">
+                      <form method="POST" action="" role="form" class="col s12">
+                          {% csrf_token %}
+                        {{ form.body }}
+
+                        <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+
+                        </button>
+                      </form>
+                  </div>
+
+
+
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

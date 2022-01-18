@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="container">
+      <div class="row">
+        <div class="col-sm-4">
+
+
+            {% include 'navbar.html' %}
+
+        </div>
+        <div class="col-sm-8">
+
+            <h5 style="margin-top: 25px">Мои подписки:</h5>
+            <p>Люди, на которых я подписан</p>
+           {% for person in my_follows %}
+               <div class="card" style="width: 18rem; margin-top: 5ch" >
+                 {% if person.subscribed.profile.picture %}
+                    <img src="{{ person.subscribed.profile.picture.url }}" class="card-img-top" alt="...">
+                  {% else %}
+                    <img src="{% static 'img/default_header_image.png' %}" class="card-img-top" alt="...">
+                  {% endif %}
+
+                  {% if person.expired == True %}
+                        <span class="red-text">Expired</span>
+                  {% else %}
+                        <span class="teal-text accent-4"><b>{{ person.date }}</b> days left</span>
+                  {% endif %}
+
+
+                  <div class="card-body">
+                    <h5 class="card-title">{% if person.subscribed.profile.picture %}<img src="{{ person.subscribed.profile.picture.url }}" alt="" width="32" height="32" class="rounded-circle me-2">{% else %}<img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">{% endif %}@<b>{{ person.subscribed.username }}</b></h5>
+                    <p class="card-text"> {{ person.subscribed.profile.profile_info }}</p>
+                    {% if person.expired == True %}
+                        <a class="waves-effect waves-light btn amber"><i class="material-icons left">autorenew</i>Renew subscription</a>
+                    {% else %}
+                        <a class="waves-effect waves-light btn red"><i class="material-icons left">cancel</i>Cancel subscription</a>
+                    {% endif %}
+                  </div>
+                </div>
+           {% endfor %}
+
+
+
+        </div>
+      </div>
+
+    </div>
+
+
+{% endblock %}

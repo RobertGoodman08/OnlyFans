@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block content %}
+
+    <form class="d-flex" method="post" action="{% url 'search' %}" style="margin-top: 25px">
+          {% csrf_token %}
+          <input  name="searched" type="text" placeholder="Поиск" class="form-control" >
+          <input type="submit" value="" style="display: none;">
+    </form>
+
+
+    {% if searched %}
+
+        <hr>
+        <div class="sellers_grid">
+
+		</div>
+		    <div class="grid_2">
+            {% for person in users_search %}
+
+
+                <div class="card mb-3" style="max-width: 1300px; margin-left: 45px">
+                   <a href="{% url 'new-conversation' person.username %}" style="text-decoration: none;">
+                     <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{{ person.profile.picture.url }}" alt="" width="190" height="190" class="rounded-circle me-2" style="margin-left: 20px">
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card-body">
+                        <h1 class="card-title" style="margin-top: 40px; margin-left: 50px; color: black">@{{ person.username }}</h1>
+                      </div>
+                    </div>
+                  </div>
+                   </a>
+                </div>
+
+
+
+            {% endfor %}
+
+			<div class="clearfix"> </div>
+		</div>
+
+
+    {% else %}
+        <h1>Ошибка поиска</h1>
+    {% endif %}
+
+{% endblock %}

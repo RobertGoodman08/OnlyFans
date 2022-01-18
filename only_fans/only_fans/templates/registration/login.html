@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Login</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="{% static 'css/bootstrap.min.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+<section >
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col">
+        <div class="card card-registration my-4">
+          <div class="row g-0">
+            <div class="col-xl-6 d-none d-xl-block">
+              <img
+                src="{% static 'img/onlys.jpg' %}"
+                alt="Sample photo"
+                class="img-fluid"
+                style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem; height: 500px"
+              />
+            </div>
+            <div class="col-xl-6">
+              <div class="card-body p-md-5 text-black">
+                <h3 class="mb-5 text-uppercase">Зарегистрируйтесь, чтобы поддержать любимых авторов</h3>
+                <h6>Авторизоваться</h6>
+
+                <br>
+
+                <div class="row">
+                    <form method="post" action="" role="form">
+                        {% csrf_token %}
+
+                        <div class="form-outline mb-4">
+                          {{ form.username }}
+                          <label class="form-label" for="form3Example9">Имя пользователя</label>
+                        </div>
+
+                        <div class="form-outline mb-4">
+                          {{ form.password }}
+                          <label class="form-label" for="form3Example90">Пароль</label>
+                        </div>
+
+                         <input type="hidden" name="next" value="{{ next }}">
+
+                        {% if form.errors %}
+                          <div class="row">
+                            <div class="col s12">
+                              <span style="color: red; font-weight: bold;">Ваше имя пользователя или пароль не совпадают.</span>
+                            </div>
+                          </div>
+                        {% endif %}
+
+                        <div class="d-flex justify-content-end pt-3">
+                          <button type="button" class="btn btn-light btn-lg"><a href="{% url 'signup' %}" style="text-decoration: none">Регистрация</a></button>
+                          <button type="submit" class="btn btn-warning btn-lg ms-2">Вход</button>
+                        </div>
+                    </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+
+</html>

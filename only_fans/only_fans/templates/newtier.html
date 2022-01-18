@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} ПОДПИСКА {% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3">
+        {% include 'navbar.html' %}
+    </div>
+    <div class="col-sm-8" style="margin-top: 25px">
+        <form method="post" action="" role="form" class="col s12">
+            {% csrf_token %}
+            <h5 class="card-title">Создать стоимость подписки</h5>
+            <br>
+          <div class="mb-3">
+            {{ form.price }}
+          </div>
+          <div class="mb-3">
+            {{ form.description }}
+          </div>
+          <div class="mb-3 form-check">
+            {{ form.can_message }}
+            <label class="form-check-label" for="exampleCheck1">Может ли пользователь отправить вам сообщение</label>
+          </div>
+           <button type="submit" class="btn btn-success">CREATE</button>
+        </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
